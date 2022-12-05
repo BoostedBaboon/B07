@@ -31,20 +31,3 @@ def CalculateHoleDimensions(Case, D2, w, L, Metal):
 
     return [ry, rz]
 
-
-# D21 = CalculateHoleDiameter(1, W, True)
-# D22 = CalculateHoleDiameter(2, W, True)
-# D23 = CalculateHoleDiameter(3, W, True)
-# print(D21, D22, D23)
-
-# X1 =
-# X2 =
-# X3 =
-# ry1 = CalculateHoleDimensions(1, X1, W, L, True)[0]
-# rz1 = CalculateHoleDimensions(1, X1, W, L, True)[1]
-#
-# ry2 = CalculateHoleDimensions(2, X2, W, L, True)[0]
-# rz2 = CalculateHoleDimensions(2, X2, W, L, True)[1]
-#
-# ry3 = CalculateHoleDimensions(3, X3, W, L, True)[0]
-# rz3 = CalculateHoleDimensions(3, X3, W, L, True)[1]

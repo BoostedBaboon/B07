@@ -1,28 +1,6 @@
 ## Place where all forces are calculated on each fastener
-import numpy as np
 from math import *
-
-## Forces
-Fx = [509.68, -509.68]
-Fy = [1529.05, -509.68]
-Fz = [509.68, -509.68]
-Mx = [218.55, -159.94]
-My = [29.306, -29.306]
-Mz = [130.63, -130.63]
-
-## Dimentions of the hole (distances, diameter, thickness)
-rz = [0.5]
-ry = [0.3]
-D2 = 0.01
-t2 = 0.001
-t3 = 0.001
-
-## Material properties
-StressMax = 200                 ## MPa
-EMod = 200*10 ** 3                      ## MPa
-TExpansionFast = 0.0065
-TExpansionClamped = 0.0070
-
+from Variables import Fx, Fy, Fz, Mx, My, Mz
 
 
 ## Creating formulas/actions needed multiple times
