@@ -1,5 +1,6 @@
 import math
 import matplotlib
+from Variables import Fy, Mx, My
 
 Fy = 1
 Nf = 1

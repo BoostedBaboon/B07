@@ -1,26 +1,16 @@
-from Force_Calculations import *
+from Force_Calculations import CalculateForces
 from Thermal_Forces import *
 from Bearing_Check import CalculateBearing
 from Hole_Dimentions import CalculateHoleDimensions, CalculateHoleDiameter
+from Variables import *
+from Variables import StrengthUltimate as StressMax
 from Design import w as W
 from Design import t as t1
-from Design import D as D1
 
-## Forces
-Fx = [509.68, -509.68]
-Fy = [1529.05, -509.68]
-Fz = [509.68, -509.68]
-Mx = [218.55, -159.94]
-My = [29.306, -29.306]
-Mz = [130.63, -130.63]
+## Calculation of other dimensions needed
+L = AR * W
 
-## Dimensions of the lug
-L = 10 * W
-t2 = 0.001
-t3 = 0.001
-Metal = True                    ## is the chosen material metal? (True of False)
-
-## Calculated Maximum diameters
+## Calculated Maximum diameters for each case
 D2Calc1 = CalculateHoleDiameter(1, W, Metal)
 D2Calc2 = CalculateHoleDiameter(2, W, Metal)
 D2Calc3 = CalculateHoleDiameter(3, W, Metal)
@@ -29,10 +19,18 @@ D2Calc3 = CalculateHoleDiameter(3, W, Metal)
 ## Chosen Diameters from the bolts (From Jasper)
 print("The First Max Diameter is:", D2Calc1)
 D2_1 = float(input("Enter Diameter 1:"))
+DOuter1 = float(input("Enter Outer Diameter 1:"))
+Compliance1 = float(input("Enter Compliance of Fastener 1:"))
+
 print("The Second Max Diameter is:", D2Calc2)
 D2_2 = float(input("Enter Diameter 2:"))
+DOuter2 = float(input("Enter Outer Diameter 2:"))
+Compliance2 = float(input("Enter Compliance of Fastener 2:"))
+
 print("The Third Max Diameter is:", D2Calc3)
 D2_3 = float(input("Enter Diameter 3:"))
+DOuter3 = float(input("Enter Outer Diameter 3:"))
+Compliance3 = float(input("Enter Compliance of Fastener 3:"))
 
 ## Calculates distances from CG to fastener hole
 ry1 = CalculateHoleDimensions(1, D2_1, W, L, Metal)[0]
@@ -85,14 +83,23 @@ SafetyFactorShear3 = StressMax / ShearStress3 - 1
 
 print("Bearing check", SafetyFactorShear1, SafetyFactorShear2, SafetyFactorShear3)
 
+## Intermediate Calculations
+ComplianceParts1 = 4 * t3 / (EModBackplate * pi * (DOuter1 ** 2 - D2_1 ** 2))
+ComplianceParts2 = 4 * t3 / (EModBackplate * pi * (DOuter2 ** 2 - D2_2 ** 2))
+ComplianceParts3 = 4 * t3 / (EModBackplate * pi * (DOuter3 ** 2 - D2_3 ** 2))
 
-
+ForceRatio1 = ComplianceParts1 / (ComplianceParts1 + Compliance1)
+ForceRatio2 = ComplianceParts2 / (ComplianceParts2 + Compliance2)
+ForceRatio3 = ComplianceParts3 / (ComplianceParts3 + Compliance3)
 
 ## Calculating Thermal stresses:
+FT1 = CalculateThermalForce(TExpansionFastener, TExpansionClamped, EMod, D2_1, t2, ForceRatio1)
+FT2 = CalculateThermalForce(TExpansionFastener, TExpansionClamped, EMod, D2_2, t2, ForceRatio2)
+FT3 = CalculateThermalForce(TExpansionFastener, TExpansionClamped, EMod, D2_3, t2, ForceRatio3)
 
-RInPlane1 = RInPlane1 + FT
-RInPlane2 = RInPlane2 + FT
-RInPlane3 = RInPlane3 + FT
+RInPlane1 = RInPlane1 + FT1
+RInPlane2 = RInPlane2 + FT2
+RInPlane3 = RInPlane3 + FT3
 
 StressThermal1 = RInPlane1 / (D2_1 * t2) / 10 ** 6     ## MPa
 StressThermal2 = RInPlane2 / (D2_2 * t2) / 10 ** 6     ## MPa
@@ -104,6 +111,7 @@ SafetyFactorThermal3 = StressMax / StressThermal3 - 1
 
 print("Thermal Check", SafetyFactorThermal1, SafetyFactorThermal2, SafetyFactorThermal3)
 
+print()
 print("Current dimensions are:")
 print("W =", W)
 print("L =", L)
@@ -117,4 +125,5 @@ print("Config 2:")
 print("D2 =", D2_2)
 print("Config 3:")
 print("D2 =", D2_3)
-
+print()
+print("Using", MaterialName)

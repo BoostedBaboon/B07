@@ -1,5 +1,6 @@
 from math import *
 import Graphs_Design as gp
+from Variables import StrengthYield, StrengthUltimate, D1 as D
 
 M = 218.55
 d = 0.5
@@ -8,11 +9,6 @@ Fy = 509.68
 
 # Set a factor of safety
 MS = 2
-
-# Material properties
-yield_strength = 140           # Fty [MPa]
-ultimate_strength = 210        # Ftu [MPa]
-
 
 # Calculate the force in the lug due to the moment
 def get_F1():
@@ -34,9 +30,6 @@ def get_theta():
 # Set the ratios of the dimensions
 ratio_e_D = 1.5                    # Ratio e/D
 ratio_D_t = 5                   # Ratio D/t
-
-# Choose the diameter of the hole D
-D = 0.01                           # Diameter
 
 # Calculate the other dimensions based on D
 e = ratio_e_D * D
@@ -93,7 +86,7 @@ def get_Pty():
     ratio_areas = get_Aav_over_Abr()
     Kty = get_Kty(ratio_areas)
     A_br = get_Abr()
-    Pty = Kty * A_br * yield_strength * 10**6
+    Pty = Kty * A_br * StrengthYield * 10**6
     return Pty
 
 
@@ -114,7 +107,7 @@ def get_Kbry(ratio_e_D):
 def get_Pbry():
     Kbry = get_Kbry(ratio_e_D)
     A_br = get_Abr()
-    Pbry = Kbry * A_br * ultimate_strength * 10**6
+    Pbry = Kbry * A_br * StrengthUltimate * 10**6
     return Pbry
 
 
